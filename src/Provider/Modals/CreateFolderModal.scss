@@ -1,0 +1,14 @@
+.input-container{
+    display: flex;
+    gap: 10px;
+    .input-bar{
+        flex-grow: 1;
+        padding: 10px;
+
+    }
+    .btn{
+        border-radius: 10px;
+        cursor: pointer;
+        padding: 0px 10px;
+    }
+}
