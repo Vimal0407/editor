@@ -34,7 +34,7 @@ const App = () => {
         execution_id: executionId, // Use the execution ID if continuing
       };
 
-      const response = await axios.post("http://localhost:8000/run_code/", requestData);
+      const response = await axios.post("https://backend-3qrg.onrender.com/run_code/", requestData);
 
       setOutput((prev) => prev + response.data.output);
       
@@ -47,7 +47,7 @@ const App = () => {
       }
 
       if (response.data.error) {
-        const explanation = await axios.post("http://localhost:8000/explain_error/", {
+        const explanation = await axios.post("https://backend-3qrg.onrender.com/explain_error/", {
           error_message: response.data.error
         });
         setDeepSeekCode(explanation.data.explanation);
@@ -113,7 +113,7 @@ const handleInputKeyPress = (e) => {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.post("http://localhost:8000/chatgpt_search/", {
+      const response = await axios.post("https://backend-3qrg.onrender.com/chatgpt_search/", {
         query: searchQuery,
       });
       setDeepSeekCode(response.data.code || "No code returned.");
@@ -125,7 +125,7 @@ const handleInputKeyPress = (e) => {
   const handleTranslate = async () => {
     const langMap = { "c++": "C++", python: "Python", javascript: "JavaScript", c: "C", java: "Java" };
     try {
-      const response = await axios.post("http://localhost:8000/translate_code/", {
+      const response = await axios.post("https://backend-3qrg.onrender.com/translate_code/", {
         source_code: code,
         target_language: langMap[selectedLanguage],
       });
@@ -138,7 +138,7 @@ const handleInputKeyPress = (e) => {
 
   const handleDebug = async () => {
     try {
-      const response = await axios.post("http://localhost:8000/debug/", {
+      const response = await axios.post("https://backend-3qrg.onrender.com/debug/", {
         source_code: code,
       });
       setDeepSeekCode(response.data.optimized_code);
