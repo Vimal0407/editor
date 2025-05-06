@@ -18,7 +18,7 @@ const Login = () => {
     setLoginError("");
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/playground"); // navigate on success
+      navigate("/"); // navigate on success
     } catch (error) {
       setLoginError(error.message);
     }
