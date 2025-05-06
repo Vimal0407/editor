@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../../firebase-config";
-import "./forgotPassword.scss"; // Optional styling
+import { Link } from "react-router-dom"; // ✅ Use Link for internal routing
+import "./forgotPassword.scss";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -11,9 +12,9 @@ const ForgotPassword = () => {
     e.preventDefault();
     try {
       await sendPasswordResetEmail(auth, email);
-      setMessage("Password reset link sent to your email.");
+      setMessage("✅ Password reset link sent to your email.");
     } catch (error) {
-      setMessage("Error: " + error.message);
+      setMessage("❌ Error: " + error.message);
     }
   };
 
@@ -33,7 +34,7 @@ const ForgotPassword = () => {
         </form>
         {message && <p>{message}</p>}
         <p>
-          Back to <a href="/login">Login</a>
+          Back to <Link to="/login">Login</Link> {/* ✅ Internal routing */}
         </p>
       </div>
     </div>
