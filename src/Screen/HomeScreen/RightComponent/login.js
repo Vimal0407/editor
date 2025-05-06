@@ -2,64 +2,67 @@ import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../../firebase-config";
 import { useNavigate } from "react-router-dom";
+import ForgotPassword from "./ForgotPassword";
 import "./login.scss";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
+  const [loginError, setLoginError] = useState("");
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoginError("");
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      alert("Login successful!");
-      navigate("/");
+      navigate("/playground"); // navigate on success
     } catch (error) {
-      alert("Login failed: " + error.message);
+      setLoginError(error.message);
     }
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-box">
+    <div className="login-container">
+      <div className="login-box">
         <h2>Login</h2>
         <form onSubmit={handleLogin}>
           <input
             type="email"
             placeholder="Email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
             required
+            onChange={(e) => setEmail(e.target.value)}
           />
-
-          <div className="password-field">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <span
-              onClick={() => setShowPassword(!showPassword)}
-              style={{ cursor: "pointer", marginLeft: "8px" }}
-            >
-              {showPassword ? "🙈" : "👁️"}
-            </span>
-          </div>
-
-          <button type="submit">Log In</button>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            required
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button type="submit">Login</button>
         </form>
-
+        {loginError && <p className="error">{loginError}</p>}
         <p>
-          <a href="/forgot-password">Forgot Password?</a>
+          Don't have an account? <a href="/signup">Sign up</a>
         </p>
         <p>
-          Don't have an account? <a href="/signup">Sign Up</a>
+          <button
+            type="button"
+            onClick={() => setShowForgotPassword(true)}
+            className="link-button"
+          >
+            Forgot Password?
+          </button>
         </p>
       </div>
+
+      {showForgotPassword && (
+        <ForgotPassword onClose={() => setShowForgotPassword(false)} />
+      )}
     </div>
   );
 };
