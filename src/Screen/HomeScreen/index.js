@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Modal } from "../../Provider/Modals/Modal";
 import "./index.scss";
 import { RightComponent } from "./RightComponent";
@@ -11,7 +11,14 @@ import { auth } from "../../firebase-config";
 export const HomeScreen = () => {
   const modalFeatures = useContext(ModalContext);
   const navigate = useNavigate();
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
+
+  useEffect(() => {
+    // Redirect to login if not logged in
+    if (!loading && !user) {
+      navigate("/login");
+    }
+  }, [user, loading, navigate]);
 
   const openCreatePlaygroundModal = () => {
     modalFeatures.openModal(modalconstants.CREATE_PLAYGROUND);
@@ -20,11 +27,13 @@ export const HomeScreen = () => {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      navigate("/"); // Return to home after logout
+      navigate("/login"); // Go back to login page after logout
     } catch (error) {
       console.error("Logout failed:", error);
     }
   };
+
+  if (loading) return <div>Loading...</div>; // Optional: Show a loader while auth state is being determined
 
   return (
     <div className="home-container">
@@ -39,19 +48,11 @@ export const HomeScreen = () => {
             <span>Create File</span>
           </button>
 
-          {user ? (
-            <>
-              <button onClick={() => navigate("/login")}>
-                {user.displayName || user.email}
-              </button>
-              <button onClick={handleLogout}>Logout</button>
-            </>
-          ) : (
-            <>
-              <button onClick={() => navigate("/login")}>Log In</button>
-              <button onClick={() => navigate("/signup")}>Sign Up</button>
-            </>
-          )}
+          {/* Only show username and logout when logged in */}
+          <button onClick={() => navigate("/login")}>
+            {user?.displayName || user?.email}
+          </button>
+          <button onClick={handleLogout}>Logout</button>
         </div>
       </div>
       <RightComponent />

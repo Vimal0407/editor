@@ -60,7 +60,7 @@ const Folder = ({ folderTitle, cards, folderId }) => {
           };
           return (
             <div className="card" key={index} onClick={() => navigate('/file')} >
-              <img src="file.png" alt="file icon" />
+              <img src="file-removebg-preview.png" alt="file icon" />
               <div className="title-container">
                 <span>{file?.title}</span>
                 <span>Language: {file?.language}</span>

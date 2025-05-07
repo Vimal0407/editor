@@ -1,24 +1,32 @@
+// src/Screen/HomeScreen/RightComponent/login.js
 import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../../firebase-config";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
 import ForgotPassword from "./ForgotPassword";
 import "./login.scss";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [user] = useAuthState(auth);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const [showForgotPassword, setShowForgotPassword] = useState(false);
 
+  // Redirect if already logged in
+  if (user) {
+    return <Navigate to="/home" replace />;
+  }
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoginError("");
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/"); // navigate on success
+      navigate("/home"); // Navigate to protected route
     } catch (error) {
       setLoginError(error.message);
     }
