@@ -1,7 +1,6 @@
 // App.js
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { HomeScreen } from "./Screen/HomeScreen";
-import { PlaygroundScreen } from "./Screen/PlaygroundScreen";
 import { PlaygroundProvider } from "./Provider/PlaygroundProvider";
 import { ModalProvider } from "./Provider/ModalProvider";
 import FilePage from "./Screen/HomeScreen/RightComponent/file";
@@ -25,7 +24,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="/Playground" element={<PlaygroundScreen />} />
             <Route path="/file" element={<FilePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />

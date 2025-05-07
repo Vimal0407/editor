@@ -1,6 +1,9 @@
+.modal-container{
+    color: black;
 .input-container{
     display: flex;
     gap: 10px;
+   
     .input-bar{
         flex-grow: 1;
         padding: 10px;
@@ -11,4 +14,5 @@
         cursor: pointer;
         padding: 0px 10px;
     }
+}
 }
